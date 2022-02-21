@@ -27,7 +27,7 @@ renderer.setSize(window.innerWidth, window.innerHeight);
 camera.position.setZ(30);
 
 // Lighting
-const ambientLight = new THREE.AmbientLight(0xffffff);
+const ambientLight = new THREE.AmbientLight(0xffffff, 0.1);
 const pointLight = new THREE.PointLight(0xffffff);
 pointLight.position.set(20, 5, 5);
 scene.add(pointLight, ambientLight);
@@ -45,17 +45,36 @@ scene.add(torus);
 
 function addStar() {
   const geometry = new THREE.SphereGeometry(0.25, 24, 24);
-  const material = new THREE.MeshStandardMaterial({ color: 0xffffff });
+  const material = new THREE.MeshStandardMaterial({
+    color: 0xffffff,
+    emissive: 0xffffff,
+    emissiveIntensity: 0.1,
+  });
+
   const star = new THREE.Mesh(geometry, material);
+
   const [x, y, z] = Array(3)
     .fill(0)
     .map(() => THREE.MathUtils.randFloatSpread(100));
 
   star.position.set(x, y, z);
+
   scene.add(star);
 }
 
 Array(200).fill(0).map(addStar);
+
+const spaceTexture = new THREE.TextureLoader().load("space.jpg");
+scene.background = spaceTexture;
+
+const moonTexture = new THREE.TextureLoader().load("moon.jpg");
+const moonNormals = new THREE.TextureLoader().load("normal.jpg");
+
+const moon = new THREE.Mesh(
+  new THREE.SphereGeometry(3, 32, 32),
+  new THREE.MeshStandardMaterial({ map: moonTexture, normalMap: moonNormals })
+);
+scene.add(moon);
 
 function tick() {
   requestAnimationFrame(tick);
