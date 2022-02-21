@@ -21,9 +21,20 @@ renderer.setSize(window.innerWidth, window.innerHeight);
 // Move Camera back
 camera.position.setZ(30);
 
+const ambientLight = new THREE.AmbientLight(0xffffff);
+scene.add(ambientLight);
+
+const pointLight = new THREE.PointLight(0xffffff);
+pointLight.position.set(20, 5, 5);
+scene.add(pointLight);
+
+const pointLightHelper = new THREE.PointLightHelper(pointLight);
+const gripHelper = new THREE.GridHelper(200, 50);
+scene.add(pointLightHelper, gripHelper);
+
 const geometry = new THREE.TorusGeometry(10, 3, 16, 100);
-// no light source required
-const material = new THREE.MeshBasicMaterial({ color: 0xff6347, wireframe: true });
+// MeshBasicMaterial = no light source required
+const material = new THREE.MeshStandardMaterial({ color: 0xff6347 });
 
 const torus = new THREE.Mesh(geometry, material);
 
