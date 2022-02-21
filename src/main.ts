@@ -24,7 +24,7 @@ renderer.setPixelRatio(window.devicePixelRatio);
 // Full Screen
 renderer.setSize(window.innerWidth, window.innerHeight);
 // Move Camera back
-camera.position.setZ(30);
+// camera.position.setZ(30);
 
 // Lighting
 const ambientLight = new THREE.AmbientLight(0xffffff, 0.1);
@@ -74,17 +74,34 @@ const moon = new THREE.Mesh(
   new THREE.SphereGeometry(3, 32, 32),
   new THREE.MeshStandardMaterial({ map: moonTexture, normalMap: moonNormals })
 );
+moon.position.z = -30;
+// moon.position.setX(-10);
+
 scene.add(moon);
 
 function tick() {
   requestAnimationFrame(tick);
 
-  torus.rotation.x += 0.01;
-  torus.rotation.y += 0.005;
-  torus.rotation.z += 0.0005;
+  // torus.rotation.x += 0.01;
+  // torus.rotation.y += 0.005;
+  // torus.rotation.z += 0.0005;
 
-  controls.update();
+  // controls.update();
   renderer.render(scene, camera);
 }
 
 tick();
+
+function moveCamera() {
+  const t = document.body.getBoundingClientRect().top;
+  moon.rotation.x += 0.05;
+  moon.rotation.x += 0.075;
+  moon.rotation.z += 0.05;
+  // console.log(t);
+  console.log(t, t * -0.01);
+  camera.position.z = t * -0.01;
+  camera.position.setX(t * -0.0002);
+  camera.position.setY(t * -0.0002);
+}
+
+document.body.onscroll = moveCamera;
